@@ -36,9 +36,24 @@ class PortfolioApp {
     console.log('[PortfolioApp] Unmasked & Initialized');
     const container = document.getElementById('webgl-container');
     if (container) this.sceneManager = new SceneManager(container);
-    document.querySelectorAll('.hero-section .reveal-line').forEach((el, i) => {
-      setTimeout(() => el.closest('.reveal-wrapper')?.classList.add('is-in-view'), i * 150 + 100);
-    });
+    this.initHeroSequence();
+  }
+
+  /* The opening behaves like a title sequence: let the 3D object have the stage first. */
+  initHeroSequence() {
+    const hero = document.querySelector('.hero-section');
+    if (!hero) return;
+    hero.classList.add('hero-sequence-active');
+
+    const revealHeroCopy = () => {
+      hero.classList.add('hero-copy-revealed');
+      document.querySelectorAll('.hero-section .reveal-line').forEach((el, i) => {
+        setTimeout(() => el.closest('.reveal-wrapper')?.classList.add('is-in-view'), i * 130);
+      });
+    };
+
+    const delay = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 150 : 1250;
+    window.setTimeout(revealHeroCopy, delay);
   }
 
   initRoleCycler() {
