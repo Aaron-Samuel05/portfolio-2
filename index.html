@@ -413,27 +413,35 @@
             </div>
           </article>
 
-          <!-- EXHIBIT 03: PING PONG DUAL-ENGINE -->
+          <!-- EXHIBIT 03: CRYPTO MINING SIMULATOR -->
           <article class="project-exhibit" data-cursor="project">
             <div class="exhibit-inner">
               
-              <!-- Left: Interactive Real-Time Physics Canvas -->
+              <!-- Left: Interactive Simulation Preview -->
               <div class="exhibit-stage">
                 <div class="exhibit-stage-header">
-                  <span class="stage-badge" style="color: #4d96ff;">INTERACTIVE PHYSICS CANVAS</span>
-                  <span>60 FPS DELTA</span>
+                  <span class="stage-badge" style="color: var(--system-cyan);">INTERACTIVE MINING SIMULATION</span>
+                  <span>SIMULATION ONLINE</span>
                 </div>
 
                 <div class="stage-visualizer">
-                  <div class="pingpong-canvas-wrap">
-                    <canvas id="pingpong-canvas" class="pingpong-canvas"></canvas>
-                    <div class="canvas-hint">// MOVE CURSOR OVER CANVAS TO CONTROL RIGHT PADDLE</div>
+                  <div class="crypto-sim">
+                    <div class="crypto-sim__header">
+                      <span>MINER // NODE_07</span>
+                      <span>BLOCK 184204</span>
+                    </div>
+                    <div class="crypto-sim__core"><span>HASH RATE</span><strong>42.8 MH/s</strong></div>
+                    <div class="crypto-sim__track"><span></span></div>
+                    <div class="crypto-sim__stats">
+                      <span><b>0.0042</b> BTC / DAY</span>
+                      <span><b>68%</b> EFFICIENCY</span>
+                    </div>
                   </div>
                 </div>
 
                 <div class="text-mono-sm" style="display: flex; justify-content: space-between;">
-                  <span>DUAL ENGINE: JAVA &amp; PYTHON</span>
-                  <span>PHYSICS: VECTOR ACCELERATION</span>
+                  <span>SIMULATION: BROWSER RUNTIME</span>
+                  <span>MODEL: PROGRESSION LOOP</span>
                 </div>
               </div>
 
@@ -441,43 +449,41 @@
               <div class="exhibit-info">
                 <div>
                   <div class="exhibit-meta-top">
-                    <span class="exhibit-num" style="color: #4d96ff;">03 / 03</span>
-                    <span class="exhibit-year">2024 — 2025</span>
+                    <span class="exhibit-num" style="color: var(--system-cyan);">03 / 03</span>
+                    <span class="exhibit-year">2024</span>
                   </div>
 
-                  <h3 class="exhibit-title">Ping Pong Dual-Engine</h3>
-                  <div class="exhibit-tagline" style="color: #4d96ff;">Cross-Language Physics &amp; Real-Time Simulation</div>
+                  <h3 class="exhibit-title">Crypto Mining Simulator</h3>
+                  <div class="exhibit-tagline" style="color: var(--system-cyan);">Interactive Mining Simulation</div>
                   <p class="exhibit-desc">
-                    An interactive real-time simulation engine developed natively across both Java (JavaFX) and Python (PyGame) to benchmark cross-runtime execution, collision arbitration, and physics responsiveness between the JVM and CPython.
+                    An interactive browser simulator that turns crypto-mining concepts into a game-like experience with simulated hardware, earnings, and progression. Built to make an abstract system legible through direct interaction.
                   </p>
 
                   <div class="exhibit-metrics">
                     <div class="metric-item">
-                      <span class="metric-val">Dual Runtimes</span>
-                      <span class="metric-lbl">JVM + CPython</span>
+                      <span class="metric-val">Browser</span>
+                      <span class="metric-lbl">Interactive Runtime</span>
                     </div>
                     <div class="metric-item">
-                      <span class="metric-val">60 FPS</span>
-                      <span class="metric-lbl">Synchronous Loop</span>
+                      <span class="metric-val">Progression</span>
+                      <span class="metric-lbl">Game-Like Systems</span>
                     </div>
                     <div class="metric-item">
-                      <span class="metric-val">Vector Math</span>
-                      <span class="metric-lbl">Elastic Rebound</span>
+                      <span class="metric-val">Simulation</span>
+                      <span class="metric-lbl">Mining Economics</span>
                     </div>
                   </div>
 
                   <div class="exhibit-tech-stack">
-                    <span class="tech-chip">Java</span>
-                    <span class="tech-chip">Python</span>
-                    <span class="tech-chip">PyGame</span>
-                    <span class="tech-chip">JavaFX</span>
-                    <span class="tech-chip">OOP Architecture</span>
-                    <span class="tech-chip">Physics Vectors</span>
+                    <span class="tech-chip">HTML</span>
+                    <span class="tech-chip">CSS</span>
+                    <span class="tech-chip">JavaScript</span>
+                    <span class="tech-chip">Simulation Logic</span>
                   </div>
                 </div>
 
                 <div class="exhibit-actions">
-                  <a href="https://github.com/Aaron-Samuel05" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="background-color: #4d96ff; border-color: #4d96ff;" data-cursor="pointer">
+                  <a href="https://github.com/Aaron-Samuel05" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="background-color: var(--system-cyan); border-color: var(--system-cyan);" data-cursor="pointer">
                     <span>INSPECT ON GITHUB</span>
                     <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                       <line x1="7" y1="17" x2="17" y2="7"></line>
@@ -575,7 +581,7 @@
                 <span class="meta-stat-lbl">EXPECTED GRADUATION</span>
               </div>
               <div>
-                <span class="meta-stat-val">3rd Year</span>
+                <span class="meta-stat-val">4th Year</span>
                 <span class="meta-stat-lbl">ACADEMIC STANDING</span>
               </div>
               <div>
@@ -739,23 +745,25 @@
             <form id="transmission-form">
               <div class="form-group">
                 <label class="form-label" for="form-name">NAME // SENDER IDENTIFIER *</label>
-                <input type="text" id="form-name" class="form-input" required placeholder="e.g. Alex Henderson">
+                <input type="text" id="form-name" name="name" class="form-input" required maxlength="100" autocomplete="name" placeholder="e.g. Alex Henderson">
               </div>
 
               <div class="form-group">
                 <label class="form-label" for="form-email">EMAIL // RESPONSE COORDINATES *</label>
-                <input type="email" id="form-email" class="form-input" required placeholder="e.g. alex@studio.com">
+                <input type="email" id="form-email" name="email" class="form-input" required maxlength="254" autocomplete="email" placeholder="e.g. alex@studio.com">
               </div>
 
               <div class="form-group">
                 <label class="form-label" for="form-subject">SUBJECT // OBJECTIVE</label>
-                <input type="text" id="form-subject" class="form-input" placeholder="e.g. Software Engineering Opportunity / Collaboration">
+                <input type="text" id="form-subject" name="subject" class="form-input" required maxlength="160" placeholder="e.g. Software Engineering Opportunity / Collaboration">
               </div>
 
               <div class="form-group">
                 <label class="form-label" for="form-message">MESSAGE // TRANSMISSION PAYLOAD *</label>
-                <textarea id="form-message" class="form-textarea" required placeholder="Detail your project, role, or technical inquiry..."></textarea>
+                <textarea id="form-message" name="message" class="form-textarea" required minlength="20" maxlength="4000" placeholder="Detail your project, role, or technical inquiry..."></textarea>
               </div>
+
+              <p id="form-status" class="form-status" role="status" aria-live="polite"></p>
 
               <button type="submit" class="btn btn-primary" style="width: 100%;" data-cursor="pointer">
                 <span>DISPATCH TRANSMISSION</span>
@@ -783,7 +791,7 @@
         <span>COMPUTER SCIENCE &amp; ENGINEERING</span>
       </div>
       <div class="footer-coords">
-        SRM IST CHENNAI // CGPA 8.08 // 2023–2027
+        SRM IST CHENNAI // CGPA 8.08 // 4TH YEAR // 2023–2027
       </div>
       <div>
         <span>EST. 2026 // ALL RIGHTS RESERVED</span>

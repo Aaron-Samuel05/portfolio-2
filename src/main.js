@@ -8,7 +8,6 @@ import { SceneManager } from './3d/SceneManager.js';
 import { Cursor } from './interactions/Cursor.js';
 import { Preloader } from './interactions/Preloader.js';
 import { AudioEngine } from './interactions/AudioEngine.js';
-import { PingPongEngine } from './interactions/PingPongEngine.js';
 
 class PortfolioApp {
   constructor() {
@@ -49,12 +48,6 @@ class PortfolioApp {
     const container = document.getElementById('webgl-container');
     if (container) {
       this.sceneManager = new SceneManager(container);
-    }
-
-    // Mount Interactive Ping Pong simulation in Exhibit 03
-    const pingPongCanvas = document.getElementById('pingpong-canvas');
-    if (pingPongCanvas) {
-      this.pingPong = new PingPongEngine(pingPongCanvas);
     }
 
     // Reveal Hero elements with crisp rhythm
@@ -194,6 +187,7 @@ class PortfolioApp {
   initContactActions() {
     const toast = document.getElementById('toast');
     const toastMsg = document.getElementById('toast-msg');
+    let isSubmitting = false;
 
     const showToast = (message) => {
       if (!toast || !toastMsg) return;
@@ -227,24 +221,49 @@ class PortfolioApp {
     // Form Submission
     const contactForm = document.getElementById('transmission-form');
     if (contactForm) {
-      contactForm.addEventListener('submit', (e) => {
+      contactForm.addEventListener('submit', async (e) => {
         e.preventDefault();
+        if (isSubmitting || !contactForm.reportValidity()) return;
+
         const submitBtn = contactForm.querySelector('button[type="submit"]');
-        const originalText = submitBtn.innerHTML;
+        const status = document.getElementById('form-status');
+        const formData = Object.fromEntries(new FormData(contactForm).entries());
+        isSubmitting = true;
 
         submitBtn.disabled = true;
-        submitBtn.innerHTML = '<span>TRANSMITTING...</span>';
+        submitBtn.classList.add('is-loading');
+        submitBtn.querySelector('span').textContent = 'TRANSMITTING...';
+        if (status) {
+          status.textContent = '';
+          status.className = 'form-status';
+        }
 
-        setTimeout(() => {
-          submitBtn.innerHTML = '<span>TRANSMISSION CONFIRMED</span>';
-          showToast('MESSAGE DISPATCHED TO AARON EBENEZER SAMUEL');
+        try {
+          const response = await fetch('/api/contact', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData),
+          });
+          const result = await response.json().catch(() => ({}));
+          if (!response.ok) throw new Error(result.error || 'Unable to send your message right now.');
+
           contactForm.reset();
-
-          setTimeout(() => {
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = originalText;
-          }, 3500);
-        }, 1200);
+          if (status) {
+            status.textContent = 'Message received.';
+            status.className = 'form-status is-success';
+          }
+          showToast('MESSAGE RECEIVED');
+        } catch (error) {
+          if (status) {
+            status.textContent = error.message;
+            status.className = 'form-status is-error';
+          }
+        } finally {
+          isSubmitting = false;
+          submitBtn.disabled = false;
+          submitBtn.classList.remove('is-loading');
+          submitBtn.querySelector('span').textContent = 'DISPATCH TRANSMISSION';
+        }
       });
     }
   }

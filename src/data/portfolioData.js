@@ -33,11 +33,11 @@ export const projects = [
   {
     id: "01",
     code: "PRJ-FIT",
-    title: "FITCHECK / FLEXIFY",
-    tagline: "Intelligent Athletic Workout Engine & Architecture",
-    category: "Full-Stack Web System",
+    title: "FitCheck",
+    tagline: "AI Fitness & Workout Assistant",
+    category: "Fitness Web App",
     year: "2025 — 2026",
-    status: "Active Production Code",
+    status: "Active Project",
     summary:
       "A high-performance workout management application combining intelligent workout logging, progress visualization, and responsive tracking architectures with dark obsidian ergonomics.",
     description:
@@ -67,9 +67,9 @@ export const projects = [
   {
     id: "02",
     code: "PRJ-RES",
-    title: "RES TECHNOLOGIES",
-    tagline: "Industrial Enterprise Platform & Digital Architecture",
-    category: "Corporate & Industrial Systems",
+    title: "RES Technologies",
+    tagline: "Technology Solutions Website",
+    category: "Business Website",
     year: "2025",
     status: "Deployed Platform",
     summary:
@@ -97,27 +97,25 @@ export const projects = [
   {
     id: "03",
     code: "PRJ-PNG",
-    title: "PING PONG DUAL-ENGINE",
-    tagline: "Cross-Language Physics & Real-Time Simulation",
-    category: "Simulation & Game Physics",
-    year: "2024 — 2025",
+    title: "Crypto Mining Simulator",
+    tagline: "Interactive Mining Simulation",
+    category: "Simulation / Game",
+    year: "2024",
     status: "Complete Implementation",
     summary:
-      "An interactive real-time simulation engine developed natively across both Java (JavaFX) and Python (PyGame) to examine dual-runtime execution and physics responsiveness.",
+      "An interactive browser simulator that turns crypto-mining concepts into a game-like experience with simulated hardware, earnings, and progression.",
     description:
-      "Engineered to benchmark and compare desktop interaction paradigms across JVM and CPython runtimes. Features custom collision vector mathematics, frame-independent paddle acceleration, score arbitration, and real-time audio-visual feedback loops.",
+      "Built around interactive controls, simulated mining output, and progression mechanics that make an abstract technical system easy to explore.",
     metrics: [
-      { label: "Runtimes", value: "JVM + CPython" },
-      { label: "Refresh Target", value: "Fixed 60 FPS Delta" },
-      { label: "Mechanics", value: "Elastic Vector Math" }
+      { label: "Runtime", value: "Browser" },
+      { label: "Experience", value: "Progression Loop" },
+      { label: "Model", value: "Mining Economics" }
     ],
     technologies: [
-      "Java",
-      "Python",
-      "PyGame",
-      "JavaFX",
-      "OOP Architecture",
-      "Physics Math"
+      "HTML",
+      "CSS",
+      "JavaScript",
+      "Simulation Logic"
     ],
     githubUrl: "https://github.com/Aaron-Samuel05",
     liveUrl: null,
@@ -129,7 +127,7 @@ export const projects = [
 export const skillDomains = [
   {
     id: "languages",
-    title: "Core Languages",
+    title: "Languages",
     code: "DOMAIN-01",
     icon: "terminal",
     description: "Multi-paradigm algorithmic thinking, object orientation, and systems programming.",
@@ -142,7 +140,7 @@ export const skillDomains = [
   },
   {
     id: "web",
-    title: "Web Architecture",
+    title: "Web Development",
     code: "DOMAIN-02",
     icon: "layers",
     description: "Component-driven client runtimes, reactive layouts, and scalable backend pipelines.",
@@ -185,7 +183,7 @@ export const skillDomains = [
   },
   {
     id: "soft",
-    title: "Professional Dynamics",
+    title: "Soft Skills",
     code: "DOMAIN-05",
     icon: "compass",
     description: "Engineering leadership, cross-functional collaboration, and adaptive problem solving.",
@@ -193,7 +191,8 @@ export const skillDomains = [
       { name: "Problem Solving", level: "Core", desc: "Algorithmic deconstruction of ambiguous challenges" },
       { name: "Leadership Experience", level: "Demonstrated", desc: "Guiding team initiatives and coordinating deliverables" },
       { name: "Team Collaboration", level: "Demonstrated", desc: "Clear communication, Git review flows, empathy" },
-      { name: "Adaptability", level: "Continuous", desc: "Rapid assimilation of emerging frameworks and tools" }
+      { name: "Adaptability", level: "Continuous", desc: "Rapid assimilation of emerging frameworks and tools" },
+      { name: "Empathy", level: "Demonstrated", desc: "Designing considerate experiences for people and teams" }
     ]
   }
 ];
