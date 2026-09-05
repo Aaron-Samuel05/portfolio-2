@@ -21,14 +21,15 @@ export class KineticCore {
 
   createMaterials() {
     const { THREE } = this;
-    this.caseBlack = new THREE.MeshPhysicalMaterial({ color: 0x090a0d, metalness: .9, roughness: .2, clearcoat: .75 });
-    this.caseMetal = new THREE.MeshPhysicalMaterial({ color: 0x181b22, metalness: .96, roughness: .2, clearcoat: 1 });
-    this.glass = new THREE.MeshPhysicalMaterial({ color: 0x101823, metalness: .12, roughness: .05, transmission: .18, transparent: true, opacity: .36, side: THREE.DoubleSide });
-    this.orange = new THREE.MeshPhysicalMaterial({ color: 0xff7b24, emissive: 0xff3d00, emissiveIntensity: 2.1, metalness: .55, roughness: .18 });
-    this.cyan = new THREE.MeshBasicMaterial({ color: 0x8edcff });
-    this.white = new THREE.MeshBasicMaterial({ color: 0xffffff });
-    this.dark = new THREE.MeshStandardMaterial({ color: 0x020304, roughness: .78, metalness: .18 });
-    this.gpu = new THREE.MeshPhysicalMaterial({ color: 0x252a32, metalness: .82, roughness: .24, clearcoat: .7 });
+    // Graphite rather than near-black materials so the silhouette catches the studio lights.
+    this.caseBlack = new THREE.MeshPhysicalMaterial({ color: 0x202631, metalness: .86, roughness: .24, clearcoat: 1, clearcoatRoughness: .12 });
+    this.caseMetal = new THREE.MeshPhysicalMaterial({ color: 0x4a5361, metalness: .9, roughness: .2, clearcoat: 1, clearcoatRoughness: .1 });
+    this.glass = new THREE.MeshPhysicalMaterial({ color: 0x8296aa, metalness: .08, roughness: .06, transmission: .08, transparent: true, opacity: .22, side: THREE.DoubleSide, clearcoat: 1 });
+    this.orange = new THREE.MeshPhysicalMaterial({ color: 0xff8a3d, emissive: 0xff4b0b, emissiveIntensity: 3.2, metalness: .5, roughness: .16, clearcoat: .7 });
+    this.cyan = new THREE.MeshPhysicalMaterial({ color: 0x6ee1ff, emissive: 0x19bfff, emissiveIntensity: 2.6, metalness: .35, roughness: .18 });
+    this.white = new THREE.MeshPhysicalMaterial({ color: 0xf2f6ff, emissive: 0x5f7896, emissiveIntensity: .45, metalness: .2, roughness: .22 });
+    this.dark = new THREE.MeshStandardMaterial({ color: 0x151a22, roughness: .5, metalness: .4 });
+    this.gpu = new THREE.MeshPhysicalMaterial({ color: 0x596575, emissive: 0x111722, emissiveIntensity: .5, metalness: .84, roughness: .2, clearcoat: 1 });
   }
 
   addBox(geometry, material, position, scale = [1, 1, 1], parent = this.pc) {
@@ -41,7 +42,6 @@ export class KineticCore {
 
   createPC() {
     const { THREE } = this;
-    // Main tower with bevelled-looking layered frame.
     this.addBox(new THREE.BoxGeometry(3.25, 4.35, 2.25), this.caseBlack, [0, 2.2, 0]);
     this.addBox(new THREE.BoxGeometry(2.96, 4.02, .075), this.glass, [0, 2.28, 1.14]);
     this.addBox(new THREE.BoxGeometry(.16, 4.05, .16), this.caseMetal, [-1.48, 2.25, 1.18]);
@@ -49,10 +49,9 @@ export class KineticCore {
     this.addBox(new THREE.BoxGeometry(3.02, .14, .14), this.caseMetal, [0, .25, 1.18]);
     this.addBox(new THREE.BoxGeometry(3.02, .14, .14), this.caseMetal, [0, 4.27, 1.18]);
 
-    // Motherboard / backplane.
     this.addBox(new THREE.BoxGeometry(2.55, 3.5, .08), this.caseMetal, [0, 2.25, -.98]);
 
-    // GPU — the visual centerpiece inside the glass.
+    // GPU — visual centerpiece.
     this.addBox(new THREE.BoxGeometry(2.35, .46, .72), this.gpu, [.18, 1.48, .48]);
     this.addBox(new THREE.BoxGeometry(.11, .31, .58), this.orange, [-.95, 1.48, .48]);
     this.addBox(new THREE.BoxGeometry(.72, .035, .08), this.cyan, [.38, 1.72, .86]);
@@ -69,14 +68,12 @@ export class KineticCore {
       this.pc.add(tube);
     }
 
-    // Four RAM sticks with independent glow.
     for (let i = 0; i < 4; i++) {
       const stick = this.addBox(new THREE.BoxGeometry(.13, 1.35, .09), this.orange, [-.02 + i * .19, 2.72, .42]);
       this.ram.push(stick);
     }
 
-    // Front intake fans.
-    const fanGeom = new THREE.CylinderGeometry(.57, .57, .08, 32);
+    const fanGeom = new THREE.CylinderGeometry(.57, .57, .08, 40);
     for (let i = 0; i < 3; i++) {
       const fan = new THREE.Mesh(fanGeom, this.dark);
       fan.rotation.x = Math.PI / 2;
@@ -84,34 +81,32 @@ export class KineticCore {
       this.pc.add(fan);
       this.fans.push(fan);
 
-      const ring = new THREE.Mesh(new THREE.TorusGeometry(.48, .045, 10, 48), this.orange);
+      const ring = new THREE.Mesh(new THREE.TorusGeometry(.48, .055, 12, 56), this.cyan);
       ring.position.copy(fan.position);
       this.pc.add(ring);
       this.fans.push(ring);
     }
 
-    // Top-mounted liquid-cooling fans.
     for (let i = 0; i < 2; i++) {
-      const fan = new THREE.Mesh(new THREE.CylinderGeometry(.48, .48, .07, 32), this.dark);
+      const fan = new THREE.Mesh(new THREE.CylinderGeometry(.48, .48, .07, 40), this.dark);
       fan.rotation.z = Math.PI / 2;
       fan.position.set(-.55 + i * 1.1, 4.05, 0);
       this.pc.add(fan);
       this.fans.push(fan);
-      const ring = new THREE.Mesh(new THREE.TorusGeometry(.4, .04, 10, 40), this.cyan);
+      const ring = new THREE.Mesh(new THREE.TorusGeometry(.4, .045, 12, 48), this.orange);
       ring.rotation.x = Math.PI / 2;
       ring.position.copy(fan.position);
       this.pc.add(ring);
       this.fans.push(ring);
     }
 
-    // Minimal front I/O and power button.
     this.addBox(new THREE.BoxGeometry(.55, .05, .08), this.cyan, [-.65, .42, 1.16]);
     this.addBox(new THREE.CylinderGeometry(.08, .08, .035, 24), this.orange, [.72, .44, 1.18]);
   }
 
   createPlatform() {
     const { THREE } = this;
-    const platform = new THREE.Mesh(new THREE.CylinderGeometry(2.55, 2.72, .16, 64), new THREE.MeshPhysicalMaterial({ color: 0x07080b, metalness: .95, roughness: .16, clearcoat: 1 }));
+    const platform = new THREE.Mesh(new THREE.CylinderGeometry(2.55, 2.72, .16, 64), new THREE.MeshPhysicalMaterial({ color: 0x11151c, metalness: .95, roughness: .16, clearcoat: 1 }));
     platform.position.y = -.08;
     this.group.add(platform);
     const orangeRing = new THREE.Mesh(new THREE.TorusGeometry(2.42, .025, 10, 96), this.orange);
@@ -122,7 +117,7 @@ export class KineticCore {
     whiteRing.rotation.x = Math.PI / 2;
     whiteRing.position.y = .035;
     this.group.add(whiteRing);
-    const floor = new THREE.Mesh(new THREE.CircleGeometry(6.5, 64), new THREE.MeshBasicMaterial({ color: 0x010101, transparent: true, opacity: .92 }));
+    const floor = new THREE.Mesh(new THREE.CircleGeometry(6.5, 64), new THREE.MeshBasicMaterial({ color: 0x020204, transparent: true, opacity: .94 }));
     floor.rotation.x = -Math.PI / 2;
     floor.position.y = -.18;
     this.group.add(floor);
@@ -130,12 +125,20 @@ export class KineticCore {
 
   createAccentLights() {
     const { THREE } = this;
-    this.orangeLight = new THREE.PointLight(0xff6b1a, 8, 9);
-    this.orangeLight.position.set(-3, 2.2, 2.5);
+    this.orangeLight = new THREE.PointLight(0xff6b1a, 11, 11);
+    this.orangeLight.position.set(-3, 2.2, 3.8);
     this.group.add(this.orangeLight);
-    this.cyanLight = new THREE.PointLight(0x4fcfff, 5, 8);
-    this.cyanLight.position.set(3, 3.8, -1.5);
+    this.cyanLight = new THREE.PointLight(0x4fcfff, 8, 10);
+    this.cyanLight.position.set(3.4, 3.8, 2.2);
     this.group.add(this.cyanLight);
+
+    // Interior practical lights make the hardware visible through the glass.
+    this.innerWarm = new THREE.PointLight(0xff7133, 5.5, 5.5);
+    this.innerWarm.position.set(-.7, 2.2, 1.05);
+    this.pc.add(this.innerWarm);
+    this.innerCool = new THREE.PointLight(0x45d8ff, 4.5, 5.5);
+    this.innerCool.position.set(1.05, 2.6, .95);
+    this.pc.add(this.innerCool);
   }
 
   update(delta, scrollProgress = 0, mouseX = 0, mouseY = 0) {
@@ -156,9 +159,11 @@ export class KineticCore {
       fan.rotation.z += delta * (i % 2 ? 1.2 : -.9);
     });
     this.ram.forEach((stick, i) => {
-      stick.material.emissiveIntensity = 1.1 + Math.sin(this.time * 2 + i * .7) * .55;
+      stick.material.emissiveIntensity = 2.0 + Math.sin(this.time * 2 + i * .7) * .8;
     });
-    this.orangeLight.intensity = 7 + Math.sin(this.time * 2.1) * 1.2;
-    this.cyanLight.intensity = 4.2 + Math.sin(this.time * 1.7 + 1) * .8;
+    this.orangeLight.intensity = 10 + Math.sin(this.time * 2.1) * 1.5;
+    this.cyanLight.intensity = 7 + Math.sin(this.time * 1.7 + 1) * 1.2;
+    this.innerWarm.intensity = 5 + Math.sin(this.time * 1.8) * .8;
+    this.innerCool.intensity = 4 + Math.sin(this.time * 1.55 + 1) * .7;
   }
 }
