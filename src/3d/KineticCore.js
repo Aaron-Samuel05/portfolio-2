@@ -1,164 +1,52 @@
 /**
- * KINETIC CORE - 3D PROCEDURAL GEOMETRY & MATERIALS
- * Precision-engineered metallic computational object.
+ * KINETIC CORE - PROCEDURAL 3D HERO OBJECT
+ * Stylized midnight street-racer silhouette. Scroll controls the reveal and spin.
  */
-
 export class KineticCore {
   constructor(THREE) {
-    this.THREE = THREE;
-    this.group = new THREE.Group();
-    this.rings = [];
-    this.nodes = [];
-    this.time = 0;
-
-    this.createCore();
-    this.createNestedRings();
-    this.createLattice();
-    this.createNucleus();
+    this.THREE = THREE; this.group = new THREE.Group(); this.vehicle = new THREE.Group(); this.rings = []; this.wheels = []; this.time = 0;
+    this.createMaterials(); this.createVehicle(); this.createOrbitalDetails(); this.createNucleus(); this.group.add(this.vehicle);
   }
-
-  createCore() {
+  createMaterials() {
     const { THREE } = this;
-
-    // Premium physical metallic material
-    this.metallicMaterial = new THREE.MeshPhysicalMaterial({
-      color: 0xd0d5dd,
-      metalness: 0.92,
-      roughness: 0.18,
-      clearcoat: 0.85,
-      clearcoatRoughness: 0.15,
-      reflectivity: 0.95,
-      wireframe: false,
-    });
-
-    this.accentMaterial = new THREE.MeshPhysicalMaterial({
-      color: 0xff8533,
-      emissive: 0xff6600,
-      emissiveIntensity: 0.45,
-      metalness: 0.8,
-      roughness: 0.25,
-      clearcoat: 1.0,
-    });
-
-    this.darkMetalMaterial = new THREE.MeshStandardMaterial({
-      color: 0x1a1d24,
-      metalness: 0.85,
-      roughness: 0.35,
-    });
+    this.paint = new THREE.MeshPhysicalMaterial({ color: 0x26374b, metalness: .88, roughness: .19, clearcoat: 1, clearcoatRoughness: .08 });
+    this.paintDark = new THREE.MeshPhysicalMaterial({ color: 0x0c121b, metalness: .92, roughness: .23, clearcoat: .8 });
+    this.glass = new THREE.MeshPhysicalMaterial({ color: 0x101b29, metalness: .25, roughness: .08, transmission: .18, transparent: true, opacity: .9 });
+    this.orange = new THREE.MeshPhysicalMaterial({ color: 0xff8738, emissive: 0xff4d00, emissiveIntensity: .5, metalness: .72, roughness: .2, clearcoat: 1 });
+    this.cyan = new THREE.MeshBasicMaterial({ color: 0x45c7ff });
+    this.tyre = new THREE.MeshStandardMaterial({ color: 0x080b10, roughness: .72, metalness: .12 });
+    this.rim = new THREE.MeshStandardMaterial({ color: 0xaeb9c9, roughness: .22, metalness: .9 });
   }
-
-  createNestedRings() {
+  createVehicle() {
     const { THREE } = this;
-
-    // Outer Gyroscope Ring 1
-    const geom1 = new THREE.TorusGeometry(2.4, 0.045, 32, 100);
-    const ring1 = new THREE.Mesh(geom1, this.metallicMaterial);
-    ring1.rotation.x = Math.PI / 4;
-    this.group.add(ring1);
-    this.rings.push({ mesh: ring1, rx: 0.003, ry: 0.005, rz: 0.002 });
-
-    // Mid Precision Ring 2
-    const geom2 = new THREE.TorusGeometry(1.9, 0.035, 32, 100);
-    const ring2 = new THREE.Mesh(geom2, this.darkMetalMaterial);
-    ring2.rotation.y = Math.PI / 3;
-    this.group.add(ring2);
-    this.rings.push({ mesh: ring2, rx: -0.004, ry: 0.003, rz: 0.004 });
-
-    // Inner Accent Ring 3
-    const geom3 = new THREE.TorusGeometry(1.4, 0.028, 24, 80);
-    const ring3 = new THREE.Mesh(geom3, this.accentMaterial);
-    ring3.rotation.z = Math.PI / 6;
-    this.group.add(ring3);
-    this.rings.push({ mesh: ring3, rx: 0.006, ry: -0.005, rz: 0.003 });
-
-    // Equatorial Tick Markers around Ring 1
-    const markerCount = 16;
-    for (let i = 0; i < markerCount; i++) {
-      const angle = (i / markerCount) * Math.PI * 2;
-      const markerGeom = new THREE.BoxGeometry(0.04, 0.12, 0.04);
-      const marker = new THREE.Mesh(markerGeom, this.accentMaterial);
-      marker.position.set(Math.cos(angle) * 2.4, Math.sin(angle) * 2.4, 0);
-      marker.rotation.z = angle;
-      ring1.add(marker);
-    }
+    const body = new THREE.Mesh(new THREE.BoxGeometry(3.25,.62,1.45), this.paint); body.position.y=.35; this.vehicle.add(body);
+    const nose = new THREE.Mesh(new THREE.BoxGeometry(1.05,.38,1.3), this.paintDark); nose.position.set(1.25,.56,0); nose.rotation.z=-.08; this.vehicle.add(nose);
+    const rear = new THREE.Mesh(new THREE.BoxGeometry(.72,.55,1.38), this.paintDark); rear.position.set(-1.34,.58,0); this.vehicle.add(rear);
+    const cabin = new THREE.Mesh(new THREE.SphereGeometry(1,16,10,0,Math.PI*2,0,Math.PI/2), this.glass); cabin.scale.set(1.05,.55,.62); cabin.position.set(-.15,.82,0); this.vehicle.add(cabin);
+    [-.66,.66].forEach(z=>{const blade=new THREE.Mesh(new THREE.BoxGeometry(2.45,.08,.12),this.orange); blade.position.set(0,.27,z); this.vehicle.add(blade);});
+    const lightBar=new THREE.Mesh(new THREE.BoxGeometry(.12,.07,1),this.cyan); lightBar.position.set(1.78,.51,0); this.vehicle.add(lightBar);
+    const tailBar=new THREE.Mesh(new THREE.BoxGeometry(.08,.07,.95),this.orange); tailBar.position.set(-1.72,.58,0); this.vehicle.add(tailBar);
+    const wheelGeom=new THREE.CylinderGeometry(.42,.42,.23,20), rimGeom=new THREE.CylinderGeometry(.22,.22,.245,16);
+    [[1.05,-.73],[1.05,.73],[-1.05,-.73],[-1.05,.73]].forEach(([x,z])=>{
+      const wheel=new THREE.Mesh(wheelGeom,this.tyre); wheel.rotation.x=Math.PI/2; wheel.position.set(x,.05,z); this.vehicle.add(wheel); this.wheels.push(wheel);
+      const rim=new THREE.Mesh(rimGeom,this.rim); rim.rotation.x=Math.PI/2; rim.position.set(x,.05,z); this.vehicle.add(rim);
+    });
+    const shadow=new THREE.Mesh(new THREE.CircleGeometry(2.35,48),new THREE.MeshBasicMaterial({color:0x06101a,transparent:true,opacity:.7})); shadow.rotation.x=-Math.PI/2; shadow.position.y=-.39; shadow.scale.set(1.35,.45,1); this.vehicle.add(shadow);
   }
-
-  createLattice() {
+  createOrbitalDetails() {
     const { THREE } = this;
-
-    // Central Geodesic Icosahedron Lattice
-    const icoGeom = new THREE.IcosahedronGeometry(0.9, 1);
-    const wireGeom = new THREE.WireframeGeometry(icoGeom);
-    const lineMat = new THREE.LineBasicMaterial({
-      color: 0xffffff,
-      transparent: true,
-      opacity: 0.35,
-    });
-    this.lattice = new THREE.LineSegments(wireGeom, lineMat);
-    this.group.add(this.lattice);
-
-    // Nodes at vertices
-    const pos = icoGeom.getAttribute('position');
-    const nodeGeom = new THREE.SphereGeometry(0.035, 12, 12);
-    for (let i = 0; i < pos.count; i++) {
-      const node = new THREE.Mesh(nodeGeom, this.accentMaterial);
-      node.position.set(pos.getX(i), pos.getY(i), pos.getZ(i));
-      this.lattice.add(node);
-      this.nodes.push(node);
-    }
+    [[2.65,.018,0xff8738,.34],[2.15,.012,0x45c7ff,-.55]].forEach(([radius,tube,color,tilt])=>{const ring=new THREE.Mesh(new THREE.TorusGeometry(radius,tube,12,96),new THREE.MeshBasicMaterial({color,transparent:true,opacity:.48})); ring.rotation.x=Math.PI/2.2; ring.rotation.z=tilt; this.group.add(ring); this.rings.push(ring);});
+    const grid=new THREE.GridHelper(9,28,0x33465c,0x1a2939); grid.material.transparent=true; grid.material.opacity=.2; grid.position.y=-.43; this.group.add(grid); this.grid=grid;
   }
-
-  createNucleus() {
-    const { THREE } = this;
-
-    // Radiant energy nucleus
-    const nucleusGeom = new THREE.SphereGeometry(0.35, 32, 32);
-    const nucleusMat = new THREE.MeshBasicMaterial({
-      color: 0xffa34d,
-      wireframe: false,
-    });
-    this.nucleus = new THREE.Mesh(nucleusGeom, nucleusMat);
-    this.group.add(this.nucleus);
-
-    // Inner pulsing point light
-    this.coreLight = new THREE.PointLight(0xff8533, 2.8, 10);
-    this.group.add(this.coreLight);
-  }
-
-  update(delta, scrollProgress = 0, mouseX = 0, mouseY = 0) {
-    this.time += delta;
-
-    // Rotate nested rings with differentiated orbital frequencies
-    this.rings.forEach((r, idx) => {
-      r.mesh.rotation.x += r.rx * (1 + scrollProgress * 1.5);
-      r.mesh.rotation.y += r.ry * (1 + scrollProgress * 1.5);
-      r.mesh.rotation.z += r.rz * (1 + scrollProgress * 1.5);
-    });
-
-    // Rotate internal lattice
-    if (this.lattice) {
-      this.lattice.rotation.x -= 0.005;
-      this.lattice.rotation.y += 0.008;
-    }
-
-    // Pulse the core nucleus
-    const pulse = Math.sin(this.time * 2.5) * 0.12 + 1.0;
-    if (this.nucleus) {
-      this.nucleus.scale.set(pulse, pulse, pulse);
-    }
-    if (this.coreLight) {
-      this.coreLight.intensity = 2.2 + Math.sin(this.time * 3.0) * 0.9;
-    }
-
-    // Interactive target rotation based on cursor & scroll
-    const targetRotY = mouseX * 0.45 + scrollProgress * Math.PI * 2.5;
-    const targetRotX = -mouseY * 0.45 + Math.sin(scrollProgress * Math.PI) * 0.5;
-
-    this.group.rotation.y += (targetRotY - this.group.rotation.y) * 0.06;
-    this.group.rotation.x += (targetRotX - this.group.rotation.x) * 0.06;
-
-    // Spatial translation according to scroll phase
-    const targetY = -scrollProgress * 2.2 + Math.sin(this.time * 0.8) * 0.12;
-    this.group.position.y += (targetY - this.group.position.y) * 0.08;
+  createNucleus(){const {THREE}=this; this.coreLight=new THREE.PointLight(0xff7a2e,2.6,9); this.coreLight.position.set(0,.7,0); this.group.add(this.coreLight);}
+  update(delta,scrollProgress=0,mouseX=0,mouseY=0){
+    this.time+=delta;
+    const targetRotY=mouseX*.28+scrollProgress*Math.PI*6, targetRotX=-mouseY*.18+Math.sin(scrollProgress*Math.PI*2)*.12, targetRotZ=Math.sin(scrollProgress*Math.PI*2)*.045;
+    this.vehicle.rotation.y+=(targetRotY-this.vehicle.rotation.y)*.075; this.vehicle.rotation.x+=(targetRotX-this.vehicle.rotation.x)*.075; this.vehicle.rotation.z+=(targetRotZ-this.vehicle.rotation.z)*.075;
+    const targetY=Math.sin(scrollProgress*Math.PI*3)*.18+Math.sin(this.time*1.3)*.035; this.vehicle.position.y+=(targetY-this.vehicle.position.y)*.07;
+    this.rings.forEach((ring,index)=>{ring.rotation.y+=(index?-1:1)*delta*.28; ring.rotation.x+=delta*.06;});
+    this.wheels.forEach(wheel=>wheel.rotation.z+=delta*.8);
+    if(this.grid)this.grid.position.x=Math.sin(this.time*.12)*.08;
+    if(this.coreLight)this.coreLight.intensity=2.2+Math.sin(this.time*2.4)*.45;
   }
 }
