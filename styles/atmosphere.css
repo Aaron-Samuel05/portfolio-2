@@ -1,0 +1,73 @@
+/* ATMOSPHERE PASS — richer colour without losing the dark cinematic base */
+
+.preloader { background: #0b1018; }
+
+.site-header {
+  background: rgba(11, 16, 24, 0.72);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.18);
+}
+
+.site-header.is-scrolled { background: rgba(11, 16, 24, 0.9); }
+
+/* Give major surfaces a little more depth and personality. */
+.project-card,
+.skill-node,
+.matrix-inspector,
+.persona-card,
+.contact-card {
+  background-image: linear-gradient(135deg, rgba(255,255,255,0.035), rgba(255,255,255,0));
+}
+
+.project-card:hover,
+.skill-node:hover,
+.persona-card:hover {
+  border-color: rgba(69, 199, 255, 0.28);
+  box-shadow: 0 20px 70px rgba(69, 199, 255, 0.07);
+}
+
+/* Small coloured details replace the overly uniform monochrome feel. */
+.section-label::before,
+.section-index::before {
+  background: var(--system-cyan);
+}
+
+.domain-tab.is-active {
+  color: var(--system-violet);
+}
+
+.domain-tab.is-active .domain-idx {
+  color: var(--system-violet);
+}
+
+.skill-node.is-selected {
+  border-color: rgba(255, 138, 61, 0.5);
+  background: linear-gradient(135deg, rgba(255,138,61,0.11), rgba(102,140,255,0.035));
+}
+
+/* Atmospheric section washes — subtle enough to remain professional. */
+.hero-section::before {
+  background: radial-gradient(circle at 72% 42%, rgba(69,199,255,0.10), transparent 32%);
+}
+
+.showcase-section::before {
+  background: radial-gradient(circle at 15% 50%, rgba(155,140,255,0.075), transparent 28%);
+}
+
+.persona-section::before {
+  background: radial-gradient(circle at 80% 45%, rgba(39,224,176,0.065), transparent 28%);
+}
+
+.contact-section::before {
+  background: radial-gradient(circle at 50% 80%, rgba(255,138,61,0.075), transparent 30%);
+}
+
+/* Improve buttons with a richer interactive state. */
+.btn-outline:hover {
+  border-color: rgba(69, 199, 255, 0.6);
+  background: rgba(69, 199, 255, 0.055);
+  box-shadow: 0 8px 30px rgba(69, 199, 255, 0.06);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::before { animation: none; }
+}
