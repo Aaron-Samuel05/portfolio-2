@@ -1,9 +1,10 @@
 /**
  * FLOW SYSTEM — quiet hierarchy, generous space, scroll-led motion.
- * Designed to make the page feel composed rather than stacked.
+ * The portfolio should feel like one experience, not a collection of cards.
  */
 
-/* Give every major section a visual pause and a soft change of atmosphere. */
+:root { --mouse-x: 50vw; --mouse-y: 45vh; --scroll-progress: 0; }
+
 main > section {
   position: relative;
   isolation: isolate;
@@ -16,10 +17,46 @@ main > section:not(.hero-section)::before {
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background: radial-gradient(circle at 50% 0%, rgba(69, 199, 255, 0.035), transparent 34%);
+  background: radial-gradient(circle at 50% 0%, rgba(69,199,255,.035), transparent 34%);
 }
 
-/* Hero: remove the wall of competing information. */
+/* A single cinematic cursor-light follows the visitor instead of adding more UI. */
+.experience-spotlight {
+  position: fixed;
+  width: 42rem;
+  height: 42rem;
+  left: var(--mouse-x);
+  top: var(--mouse-y);
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1;
+  opacity: .42;
+  background: radial-gradient(circle, rgba(69,199,255,.055), rgba(155,140,255,.018) 32%, transparent 68%);
+  filter: blur(12px);
+  mix-blend-mode: screen;
+}
+
+/* Thin progress rail makes the long page feel like a journey. */
+.experience-progress {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 3px;
+  height: 100vh;
+  z-index: 10000;
+  pointer-events: none;
+  background: rgba(210,225,255,.025);
+}
+
+.experience-progress span {
+  display: block;
+  width: 100%;
+  height: var(--progress, 0%);
+  background: linear-gradient(180deg, var(--accent-primary), var(--system-cyan), var(--system-violet));
+  box-shadow: 0 0 14px rgba(69,199,255,.28);
+}
+
 .hero-section {
   min-height: min(100svh, 980px);
   padding-top: clamp(7rem, 13vh, 9rem);
@@ -27,167 +64,74 @@ main > section:not(.hero-section)::before {
 }
 
 .hero-telemetry-strip {
-  gap: 0.8rem 1.25rem;
+  gap: .8rem 1.25rem;
   max-width: 52rem;
   margin-bottom: clamp(1.5rem, 4vh, 2.5rem);
-  opacity: 0.82;
+  opacity: .72;
 }
 
-.hero-headline-wrap {
-  max-width: 78rem;
-  margin-bottom: clamp(2rem, 5vh, 3.5rem);
-}
-
-.hero-name {
-  font-size: clamp(3.7rem, 9vw, 8.4rem);
-  letter-spacing: -0.055em;
-  line-height: 0.86;
-  max-width: 12ch;
-}
-
-.hero-subheadline {
-  margin-top: 1.2rem;
-}
-
-.hero-bottom-grid {
-  grid-template-columns: minmax(0, 1fr) auto;
-  max-width: 72rem;
-  gap: clamp(2rem, 6vw, 5rem);
-  padding-top: 1.5rem;
-  border-top-color: rgba(210, 225, 255, 0.065);
-}
-
-.hero-statement {
-  max-width: 48ch;
-}
-
-/* Scroll-led entrance: supported browsers animate naturally as content enters. */
-@supports (animation-timeline: view()) {
-  .hero-content > * {
-    animation: hero-drift linear both;
-    animation-timeline: view(block);
-    animation-range: entry 0% exit 42%;
-  }
-
-  .hero-content > :nth-child(1) { animation-delay: -20ms; }
-  .hero-content > :nth-child(2) { animation-delay: -80ms; }
-  .hero-content > :nth-child(3) { animation-delay: -140ms; }
-
-  @keyframes hero-drift {
-    from { opacity: 1; transform: translateY(0); }
-    to { opacity: 0.08; transform: translateY(-8vh) scale(0.97); }
-  }
-}
-
-/* Projects become exhibits, not a wall of UI. */
-.showcase-section {
-  padding-block: clamp(7rem, 16vw, 13rem);
-}
-
-.showcase-header {
-  max-width: 54rem;
-  margin-bottom: clamp(4rem, 9vw, 7rem);
-}
-
-.showcase-exhibits {
-  gap: clamp(8rem, 18vw, 15rem);
-}
-
-.project-exhibit {
-  background: rgba(16, 23, 34, 0.72);
-  border-color: rgba(210, 225, 255, 0.075);
-  border-radius: clamp(14px, 1.6vw, 22px);
-  box-shadow: 0 35px 100px rgba(0, 0, 0, 0.16);
-  transform: translateZ(0);
-}
-
-.project-exhibit:hover {
-  transform: translateY(-4px);
-  border-color: rgba(255, 138, 61, 0.2);
-}
-
-.exhibit-inner {
-  min-height: 540px;
-}
-
-.exhibit-stage {
-  background:
-    radial-gradient(circle at 50% 45%, rgba(69, 199, 255, 0.055), transparent 40%),
-    var(--bg-surface-1);
-}
-
-.exhibit-info {
-  background: rgba(11, 16, 24, 0.72);
-}
-
-/* Keep the technical UI quiet until it is actually interacted with. */
-.exhibit-stage-header,
-.exhibit-meta-top,
-.exhibit-metrics,
-.exhibit-tech-stack {
-  opacity: 0.88;
-}
+.hero-headline-wrap { max-width: 78rem; margin-bottom: clamp(2rem,5vh,3.5rem); }
+.hero-name { font-size: clamp(3.7rem,9vw,8.4rem); letter-spacing: -.055em; line-height: .86; max-width: 12ch; }
+.hero-subheadline { margin-top: 1.2rem; }
+.hero-bottom-grid { grid-template-columns: minmax(0,1fr) auto; max-width: 72rem; gap: clamp(2rem,6vw,5rem); padding-top: 1.5rem; border-top-color: rgba(210,225,255,.065); }
+.hero-statement { max-width: 48ch; }
 
 @supports (animation-timeline: view()) {
-  .project-exhibit {
-    animation: exhibit-rise linear both;
-    animation-timeline: view(block);
-    animation-range: entry 5% cover 30%;
-  }
-
-  @keyframes exhibit-rise {
-    from { opacity: 0.45; transform: translateY(42px) scale(0.985); }
-    to { opacity: 1; transform: translateY(0) scale(1); }
-  }
+  .hero-content > * { animation: hero-drift linear both; animation-timeline: view(block); animation-range: entry 0% exit 42%; }
+  @keyframes hero-drift { from { opacity: 1; transform: translateY(0); } to { opacity: .08; transform: translateY(-8vh) scale(.97); } }
 }
 
-/* Make repeated UI feel like one continuous story. */
-.showcase-section + section,
-section + section {
-  border-top: 0;
+.showcase-section { padding-block: clamp(7rem,16vw,13rem); }
+.showcase-header { max-width: 54rem; margin-bottom: clamp(4rem,9vw,7rem); }
+.showcase-exhibits { gap: clamp(8rem,18vw,15rem); }
+.project-exhibit { background: rgba(16,23,34,.72); border-color: rgba(210,225,255,.075); border-radius: clamp(14px,1.6vw,22px); box-shadow: 0 35px 100px rgba(0,0,0,.16); transform: translateZ(0); }
+.project-exhibit:hover { transform: translateY(-4px); border-color: rgba(255,138,61,.2); }
+.exhibit-inner { min-height: 540px; }
+.exhibit-stage { background: radial-gradient(circle at 50% 45%, rgba(69,199,255,.055), transparent 40%), var(--bg-surface-1); }
+.exhibit-info { background: rgba(11,16,24,.72); }
+.exhibit-stage-header,.exhibit-meta-top,.exhibit-metrics,.exhibit-tech-stack { opacity: .82; }
+
+/* On-scroll depth: exhibits feel like they are arriving from a larger world. */
+@supports (animation-timeline: view()) {
+  .project-exhibit { animation: exhibit-rise linear both; animation-timeline: view(block); animation-range: entry 5% cover 30%; }
+  @keyframes exhibit-rise { from { opacity: .45; transform: translateY(42px) scale(.985); } to { opacity: 1; transform: translateY(0) scale(1); } }
 }
 
-/* Reduce decorative noise while preserving the 3D atmosphere. */
-.hero-section::after {
-  opacity: 0.18;
+.showcase-section + section, section + section { border-top: 0; }
+.hero-section::after { opacity: .12; }
+#webgl-container { opacity: .76; }
+
+/* Give later sections their own atmosphere without adding more cards. */
+body[data-section="statement"] { --section-accent: var(--system-cyan); }
+body[data-section="work"] { --section-accent: var(--accent-primary); }
+body[data-section="skills"] { --section-accent: var(--system-violet); }
+body[data-section="about"] { --section-accent: var(--system-teal); }
+body[data-section="contact"] { --section-accent: var(--system-pink); }
+body[data-section] main > section::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: min(52vw, 760px);
+  height: 1px;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--section-accent) 38%, transparent), transparent);
+  opacity: .5;
+  pointer-events: none;
 }
 
-#webgl-container {
-  opacity: 0.76;
-}
-
-/* Small-screen composition: one focal point at a time. */
 @media (max-width: 800px) {
-  .hero-section {
-    min-height: 92svh;
-  }
-
-  .hero-name {
-    max-width: 10ch;
-    font-size: clamp(3.4rem, 15vw, 6rem);
-  }
-
-  .hero-bottom-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .hero-actions {
-    flex-wrap: wrap;
-  }
-
-  .showcase-exhibits {
-    gap: 5rem;
-  }
-
-  .project-exhibit {
-    border-radius: 14px;
-  }
+  .experience-progress { width: 2px; }
+  .experience-spotlight { width: 24rem; height: 24rem; opacity: .28; }
+  .hero-section { min-height: 92svh; }
+  .hero-name { max-width: 10ch; font-size: clamp(3.4rem,15vw,6rem); }
+  .hero-bottom-grid { grid-template-columns: 1fr; }
+  .hero-actions { flex-wrap: wrap; }
+  .showcase-exhibits { gap: 5rem; }
+  .project-exhibit { border-radius: 14px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    scroll-behavior: auto !important;
-  }
+  *,*::before,*::after { animation-duration:.01ms !important; animation-iteration-count:1 !important; scroll-behavior:auto !important; }
+  .experience-spotlight { display:none; }
 }
