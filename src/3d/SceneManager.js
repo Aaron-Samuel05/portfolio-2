@@ -45,7 +45,8 @@ export class SceneManager {
   setupScene() {
     this.scene = new this.THREE.Scene();
     this.scene.background = new this.THREE.Color(0x000000);
-    this.scene.fog = new this.THREE.FogExp2(0x000000, .028);
+    // Keep the silhouette crisp: the PC should read clearly against the black stage.
+    this.scene.fog = new this.THREE.FogExp2(0x000000, .008);
   }
 
   setupCamera() {
@@ -57,23 +58,33 @@ export class SceneManager {
 
   setupLights() {
     const { THREE } = this;
-    const ambientLight = new THREE.AmbientLight(0x252932, 1.15);
+
+    // Broad neutral fill keeps the case readable while coloured lights supply the gaming identity.
+    const ambientLight = new THREE.AmbientLight(0x596577, 2.15);
     this.scene.add(ambientLight);
 
-    const keyLight = new THREE.DirectionalLight(0xe9edf5, 3.2);
-    keyLight.position.set(5, 8, 6);
+    const hemi = new THREE.HemisphereLight(0xcfe9ff, 0x08090c, 1.65);
+    hemi.position.set(0, 6, 0);
+    this.scene.add(hemi);
+
+    const keyLight = new THREE.DirectionalLight(0xffffff, 5.2);
+    keyLight.position.set(5, 8, 7);
     this.scene.add(keyLight);
 
-    const warmRim = new THREE.DirectionalLight(0xff5b16, 6.5);
-    warmRim.position.set(-5, 3, -5);
+    const frontFill = new THREE.DirectionalLight(0xdce8ff, 3.8);
+    frontFill.position.set(0, 3, 8);
+    this.scene.add(frontFill);
+
+    const warmRim = new THREE.DirectionalLight(0xff641f, 8.5);
+    warmRim.position.set(-6, 4, -4);
     this.scene.add(warmRim);
 
-    const coolRim = new THREE.DirectionalLight(0x4fcfff, 3.5);
-    coolRim.position.set(5, 4, -4);
+    const coolRim = new THREE.DirectionalLight(0x42cfff, 6.5);
+    coolRim.position.set(6, 5, -3);
     this.scene.add(coolRim);
 
-    const topLight = new THREE.PointLight(0xffffff, 1.4, 14);
-    topLight.position.set(0, 7, 3);
+    const topLight = new THREE.PointLight(0xffffff, 2.6, 16);
+    topLight.position.set(0, 8, 4);
     this.scene.add(topLight);
   }
 
@@ -85,14 +96,14 @@ export class SceneManager {
     this.renderer = new THREE.WebGLRenderer({
       canvas: this.canvas,
       alpha: false,
-      antialias: window.devicePixelRatio <= 1.5,
+      antialias: true,
       powerPreference: 'high-performance'
     });
     this.renderer.setClearColor(0x000000, 1);
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    this.renderer.toneMappingExposure = 1.18;
+    this.renderer.toneMappingExposure = 1.42;
     this.canvas.addEventListener('webglcontextlost', e => {
       e.preventDefault();
       cancelAnimationFrame(this.animationFrameId);
@@ -114,7 +125,7 @@ export class SceneManager {
       positions[i + 2] = (Math.random() - .5) * 12 - 2;
     }
     geom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    const mat = new THREE.PointsMaterial({ color: 0x66717f, size: .022, transparent: true, opacity: .28 });
+    const mat = new THREE.PointsMaterial({ color: 0xaab7c8, size: .026, transparent: true, opacity: .4 });
     this.particles = new THREE.Points(geom, mat);
     this.scene.add(this.particles);
   }
