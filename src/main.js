@@ -39,7 +39,7 @@ class PortfolioApp {
     this.initHeroSequence();
   }
 
-  /* The opening behaves like a title sequence: let the 3D object have the stage first. */
+  /* The opening behaves like a game title sequence: the 3D PC gets the stage first. */
   initHeroSequence() {
     const hero = document.querySelector('.hero-section');
     if (!hero) return;
@@ -52,7 +52,8 @@ class PortfolioApp {
       });
     };
 
-    const delay = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 150 : 1250;
+    // Match the PC's 2.55s cinematic intro spin before revealing the title.
+    const delay = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 150 : 2750;
     window.setTimeout(revealHeroCopy, delay);
   }
 
@@ -80,12 +81,10 @@ class PortfolioApp {
     const nodesContainer = document.getElementById('skills-nodes');
     const inspector = document.getElementById('matrix-inspector');
     if (!tabsContainer || !nodesContainer || !inspector) return;
-
     tabsContainer.innerHTML = skillDomains.map((domain, i) => `
       <button class="domain-tab ${domain.id === this.currentDomainId ? 'is-active' : ''}" data-domain="${domain.id}" data-cursor="pointer">
         <span class="domain-idx">[0${i + 1}]</span><span>${domain.title.toUpperCase()}</span>
       </button>`).join('');
-
     tabsContainer.addEventListener('click', (e) => {
       const btn = e.target.closest('.domain-tab');
       if (!btn) return;
@@ -146,7 +145,6 @@ class PortfolioApp {
     if (copyEmailBtn) copyEmailBtn.addEventListener('click', () => navigator.clipboard.writeText(personalData.contacts.email).then(() => showToast(`COPIED EMAIL // ${personalData.contacts.email}`)));
     const copyPhoneBtn = document.getElementById('copy-phone-btn');
     if (copyPhoneBtn) copyPhoneBtn.addEventListener('click', () => navigator.clipboard.writeText(personalData.contacts.phoneRaw).then(() => showToast(`COPIED PHONE // ${personalData.contacts.phone}`)));
-
     const contactForm = document.getElementById('transmission-form');
     if (!contactForm) return;
     contactForm.addEventListener('submit', async (e) => {
@@ -155,10 +153,7 @@ class PortfolioApp {
       const submitBtn = contactForm.querySelector('button[type="submit"]');
       const status = document.getElementById('form-status');
       const formData = Object.fromEntries(new FormData(contactForm).entries());
-      isSubmitting = true;
-      submitBtn.disabled = true;
-      submitBtn.classList.add('is-loading');
-      submitBtn.querySelector('span').textContent = 'TRANSMITTING...';
+      isSubmitting = true; submitBtn.disabled = true; submitBtn.classList.add('is-loading'); submitBtn.querySelector('span').textContent = 'TRANSMITTING...';
       if (status) { status.textContent = ''; status.className = 'form-status'; }
       try {
         const response = await fetch('/api/contact', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(formData) });
@@ -170,10 +165,7 @@ class PortfolioApp {
       } catch (error) {
         if (status) { status.textContent = error.message; status.className = 'form-status is-error'; }
       } finally {
-        isSubmitting = false;
-        submitBtn.disabled = false;
-        submitBtn.classList.remove('is-loading');
-        submitBtn.querySelector('span').textContent = 'DISPATCH TRANSMISSION';
+        isSubmitting = false; submitBtn.disabled = false; submitBtn.classList.remove('is-loading'); submitBtn.querySelector('span').textContent = 'DISPATCH TRANSMISSION';
       }
     });
   }
@@ -193,15 +185,8 @@ class PortfolioApp {
 
   initExperienceMotion() {
     const progress = document.createElement('div');
-    progress.className = 'experience-progress';
-    progress.innerHTML = '<span></span>';
-    document.body.appendChild(progress);
-
-    const spotlight = document.createElement('div');
-    spotlight.className = 'experience-spotlight';
-    spotlight.setAttribute('aria-hidden', 'true');
-    document.body.appendChild(spotlight);
-
+    progress.className = 'experience-progress'; progress.innerHTML = '<span></span>'; document.body.appendChild(progress);
+    const spotlight = document.createElement('div'); spotlight.className = 'experience-spotlight'; spotlight.setAttribute('aria-hidden', 'true'); document.body.appendChild(spotlight);
     const updateScroll = () => {
       const max = document.documentElement.scrollHeight - window.innerHeight;
       const ratio = max > 0 ? window.scrollY / max : 0;
@@ -214,30 +199,20 @@ class PortfolioApp {
       }, null);
       if (active?.section?.id) document.body.dataset.section = active.section.id;
     };
-
     let ticking = false;
-    window.addEventListener('scroll', () => {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(() => { updateScroll(); ticking = false; });
+    window.addEventListener('scroll', () => { if (ticking) return; ticking = true; requestAnimationFrame(() => { updateScroll(); ticking = false; }); }, { passive: true });
+    window.addEventListener('resize', updateScroll, { passive: true }); updateScroll();
+    if (window.matchMedia('(pointer: fine)').matches) window.addEventListener('pointermove', (event) => {
+      document.documentElement.style.setProperty('--mouse-x', `${event.clientX}px`);
+      document.documentElement.style.setProperty('--mouse-y', `${event.clientY}px`);
     }, { passive: true });
-    window.addEventListener('resize', updateScroll, { passive: true });
-    updateScroll();
-
-    if (window.matchMedia('(pointer: fine)').matches) {
-      window.addEventListener('pointermove', (event) => {
-        document.documentElement.style.setProperty('--mouse-x', `${event.clientX}px`);
-        document.documentElement.style.setProperty('--mouse-y', `${event.clientY}px`);
-      }, { passive: true });
-    }
   }
 
   initHeaderBehavior() {
     const header = document.querySelector('.site-header');
     if (!header) return;
     const update = () => header.classList.toggle('is-scrolled', window.scrollY > 50);
-    window.addEventListener('scroll', update, { passive: true });
-    update();
+    window.addEventListener('scroll', update, { passive: true }); update();
   }
 
   initMobileNav() {
