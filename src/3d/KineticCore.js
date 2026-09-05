@@ -1,10 +1,12 @@
 /**
  * KINETIC CORE - PROCEDURAL 3D HERO OBJECT
- * Stylized midnight street-racer silhouette. Scroll controls the reveal and spin.
+ * Stylized midnight street-racer silhouette. The opening gives the vehicle
+ * a full cinematic spin before handing rotation over to page scroll.
  */
 export class KineticCore {
   constructor(THREE) {
     this.THREE = THREE; this.group = new THREE.Group(); this.vehicle = new THREE.Group(); this.rings = []; this.wheels = []; this.time = 0;
+    this.introSpinDuration = 2.15;
     this.createMaterials(); this.createVehicle(); this.createOrbitalDetails(); this.createNucleus(); this.group.add(this.vehicle);
   }
   createMaterials() {
@@ -41,9 +43,22 @@ export class KineticCore {
   createNucleus(){const {THREE}=this; this.coreLight=new THREE.PointLight(0xff7a2e,2.6,9); this.coreLight.position.set(0,.7,0); this.group.add(this.coreLight);}
   update(delta,scrollProgress=0,mouseX=0,mouseY=0){
     this.time+=delta;
-    const targetRotY=mouseX*.28+scrollProgress*Math.PI*6, targetRotX=-mouseY*.18+Math.sin(scrollProgress*Math.PI*2)*.12, targetRotZ=Math.sin(scrollProgress*Math.PI*2)*.045;
-    this.vehicle.rotation.y+=(targetRotY-this.vehicle.rotation.y)*.075; this.vehicle.rotation.x+=(targetRotX-this.vehicle.rotation.x)*.075; this.vehicle.rotation.z+=(targetRotZ-this.vehicle.rotation.z)*.075;
-    const targetY=Math.sin(scrollProgress*Math.PI*3)*.18+Math.sin(this.time*1.3)*.035; this.vehicle.position.y+=(targetY-this.vehicle.position.y)*.07;
+
+    // Opening title sequence: a deliberate 360°+ hero spin before any copy appears.
+    const introActive=this.time<this.introSpinDuration;
+    const introT=Math.min(this.time/this.introSpinDuration,1);
+    const easedIntro=1-Math.pow(1-introT,3);
+    const introRotation=Math.PI*2.25*easedIntro;
+    const scrollRotation=mouseX*.28+scrollProgress*Math.PI*6;
+    const targetRotY=introActive?introRotation:scrollRotation;
+    const targetRotX=-mouseY*.18+Math.sin(scrollProgress*Math.PI*2)*.12;
+    const targetRotZ=Math.sin(scrollProgress*Math.PI*2)*.045;
+    this.vehicle.rotation.y+=(targetRotY-this.vehicle.rotation.y)*.09;
+    this.vehicle.rotation.x+=(targetRotX-this.vehicle.rotation.x)*.075;
+    this.vehicle.rotation.z+=(targetRotZ-this.vehicle.rotation.z)*.075;
+
+    const targetY=Math.sin(scrollProgress*Math.PI*3)*.18+Math.sin(this.time*1.3)*.035;
+    this.vehicle.position.y+=(targetY-this.vehicle.position.y)*.07;
     this.rings.forEach((ring,index)=>{ring.rotation.y+=(index?-1:1)*delta*.28; ring.rotation.x+=delta*.06;});
     this.wheels.forEach(wheel=>wheel.rotation.z+=delta*.8);
     if(this.grid)this.grid.position.x=Math.sin(this.time*.12)*.08;
