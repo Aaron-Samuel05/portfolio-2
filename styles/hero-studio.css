@@ -1,0 +1,31 @@
+/*
+ * HERO STUDIO — cinematic gaming/workstation opening.
+ * Visual direction: premium hardware campaign, black studio, warm practical light.
+ */
+.hero-section{min-height:100svh;height:100svh;padding:0;display:block;position:relative;overflow:hidden;background:#000}
+.hero-section::before{content:'';position:absolute;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 44% 58% at 50% 47%,rgba(255,108,24,.075),transparent 65%),radial-gradient(ellipse 32% 48% at 16% 48%,rgba(12,93,128,.11),transparent 72%),radial-gradient(ellipse 28% 42% at 86% 42%,rgba(255,103,27,.09),transparent 72%),linear-gradient(to bottom,#000 0%,#020202 58%,#050505 100%)}
+.hero-section::after{content:'';position:absolute;left:0;right:0;bottom:15%;height:1px;z-index:1;pointer-events:none;background:linear-gradient(90deg,transparent,rgba(255,139,61,.28),rgba(255,255,255,.08),rgba(255,139,61,.28),transparent);box-shadow:0 95px 90px rgba(255,102,25,.055)}
+#webgl-container{z-index:1;opacity:1;mix-blend-mode:normal}
+.hero-content{z-index:4;min-height:100%;display:flex;flex-direction:column;justify-content:flex-end;padding-top:7rem;padding-bottom:clamp(2.4rem,5.5vh,5rem);pointer-events:none}
+.hero-content a,.hero-content button{pointer-events:auto}
+.hero-telemetry-strip{position:absolute;top:clamp(6.5rem,11vh,8rem);left:var(--container-pad);right:var(--container-pad);max-width:none;margin:0;justify-content:center;gap:.8rem 1.5rem;opacity:.62;transform:translateY(-4px)}
+.hero-telemetry-strip .telemetry-item:not(.status-live){opacity:.7}
+.hero-headline-wrap{width:100%;margin:0;position:relative}
+.hero-name{width:100%;max-width:none;margin:0;text-align:center;font-family:var(--font-display);font-size:clamp(4rem,11vw,11rem);font-weight:800;line-height:.78;letter-spacing:-.065em;text-shadow:0 14px 55px rgba(0,0,0,.8)}
+.hero-subheadline{justify-content:center;margin-top:1.2rem;gap:.8rem}
+.hero-bottom-grid{width:100%;max-width:none;margin-top:clamp(2rem,4vh,3rem);padding-top:1.15rem;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:end;gap:2rem;border-top:1px solid rgba(255,255,255,.09)}
+.hero-statement{max-width:38ch;font-size:.92rem;line-height:1.6;color:rgba(235,240,248,.68)}
+.hero-actions{grid-column:3;justify-content:flex-end}
+.hero-scroll-indicator{position:absolute;left:50%;bottom:clamp(1rem,2.4vh,2rem);transform:translateX(-50%);opacity:.78}
+.hero-sequence-active .hero-content{opacity:0}
+.hero-sequence-active .hero-telemetry-strip,.hero-sequence-active .hero-headline-wrap,.hero-sequence-active .hero-bottom-grid,.hero-sequence-active .hero-scroll-indicator{visibility:hidden}
+.hero-copy-revealed .hero-content{opacity:1;transition:opacity .65s ease}
+.hero-copy-revealed .hero-headline-wrap{animation:hero-title-arrival 1.05s cubic-bezier(.16,1,.3,1) both}
+.hero-copy-revealed .hero-telemetry-strip{visibility:visible;animation:hero-small-arrival .8s .08s cubic-bezier(.16,1,.3,1) both}
+.hero-copy-revealed .hero-bottom-grid{animation:hero-bottom-arrival 1s .2s cubic-bezier(.16,1,.3,1) both}
+.hero-copy-revealed .hero-scroll-indicator{animation:hero-small-arrival .8s .55s cubic-bezier(.16,1,.3,1) both}
+@keyframes hero-title-arrival{from{opacity:0;transform:translateY(110px);filter:blur(12px)}to{opacity:1;transform:translateY(0);filter:blur(0)}}
+@keyframes hero-bottom-arrival{from{opacity:0;transform:translateY(55px)}to{opacity:1;transform:translateY(0)}}
+@keyframes hero-small-arrival{from{opacity:0;transform:translateY(25px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:800px){.hero-content{padding-bottom:3rem}.hero-telemetry-strip{display:none}.hero-name{font-size:clamp(3.5rem,16vw,7rem)}.hero-bottom-grid{grid-template-columns:1fr;gap:1.5rem}.hero-actions{grid-column:auto;justify-content:flex-start}}
+@media(prefers-reduced-motion:reduce){.hero-copy-revealed .hero-headline-wrap,.hero-copy-revealed .hero-telemetry-strip,.hero-copy-revealed .hero-bottom-grid,.hero-copy-revealed .hero-scroll-indicator{animation:none}}
