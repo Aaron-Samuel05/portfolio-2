@@ -1,0 +1,107 @@
+/**
+ * RESPONSIVE & ACCESSIBILITY STYLES
+ */
+
+@media (max-width: 1024px) {
+  .exhibit-inner {
+    grid-template-columns: 1fr;
+  }
+
+  .exhibit-stage {
+    border-right: none;
+    border-bottom: 1px solid var(--border-hairline);
+    min-height: 440px;
+  }
+
+  .matrix-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .matrix-inspector {
+    position: static;
+  }
+
+  .persona-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .site-header {
+    padding-inline: 1.25rem;
+  }
+
+  .brand-coords {
+    display: none;
+  }
+
+  .header__nav {
+    display: none;
+    position: fixed;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: rgba(6, 7, 9, 0.96);
+    backdrop-filter: blur(20px);
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 2rem 1.5rem;
+    gap: 1.5rem;
+    border-bottom: 1px solid var(--border-hairline);
+  }
+
+  .header__nav.is-open {
+    display: flex;
+  }
+
+  .mobile-toggle {
+    display: block;
+  }
+
+  .hero-bottom-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-actions {
+    flex-wrap: wrap;
+  }
+
+  .exhibit-metrics {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .sim-metric-row {
+    grid-template-columns: 1fr;
+  }
+
+  .academic-meta-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .curiosity-item {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .reveal-line {
+    transform: none !important;
+    opacity: 1 !important;
+  }
+
+  .preloader {
+    display: none !important;
+  }
+}

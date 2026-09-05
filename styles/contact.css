@@ -1,0 +1,209 @@
+/**
+ * CONTACT STYLES - MONUMENTAL TRANSMISSION TERMINAL & CLOSING
+ */
+
+.contact-section {
+  position: relative;
+  padding-block: var(--section-space);
+  border-top: 1px solid var(--border-hairline);
+  background: radial-gradient(circle at 50% 100%, rgba(255, 133, 51, 0.06) 0%, transparent 70%);
+}
+
+.contact-hero-wrap {
+  margin-bottom: clamp(3.5rem, 8vw, 6rem);
+}
+
+.contact-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.8rem, 8vw, 7.5rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+}
+
+.contact-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: clamp(3rem, 6vw, 6rem);
+  align-items: start;
+}
+
+/* Left Column: Direct Communication Channels */
+.channels-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.channel-card {
+  background: var(--bg-surface-0);
+  border: 1px solid var(--border-hairline);
+  border-radius: var(--radius-sm);
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.3s ease;
+}
+
+.channel-card:hover {
+  border-color: var(--border-medium);
+  background: var(--bg-surface-1);
+}
+
+.channel-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.channel-label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.25rem;
+}
+
+.channel-value {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.channel-value:hover {
+  color: var(--accent-primary);
+}
+
+.copy-action-btn {
+  background: transparent;
+  border: 1px solid var(--border-hairline);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.copy-action-btn:hover {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+
+.social-links-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  margin-top: 1.5rem;
+}
+
+.social-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  background: var(--bg-surface-0);
+  border: 1px solid var(--border-hairline);
+  padding: 0.6rem 1rem;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.social-pill:hover {
+  border-color: var(--accent-primary);
+  color: var(--text-primary);
+  transform: translateY(-2px);
+}
+
+/* Right Column: Transmission Form */
+.transmission-form-wrap {
+  background: var(--bg-surface-0);
+  border: 1px solid var(--border-hairline);
+  border-radius: var(--radius-md);
+  padding: clamp(2rem, 4vw, 3rem);
+}
+
+.form-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.form-subtitle {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.form-input,
+.form-textarea {
+  width: 100%;
+  background: var(--bg-surface-1);
+  border: 1px solid var(--border-hairline);
+  border-radius: var(--radius-sm);
+  padding: 0.85rem 1rem;
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 12px var(--accent-glow);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+/* Footer Architectural Strip */
+.site-footer {
+  border-top: 1px solid var(--border-hairline);
+  padding-block: 2.5rem;
+  background-color: var(--bg-pitch);
+}
+
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.footer-coords {
+  letter-spacing: 0.06em;
+}
